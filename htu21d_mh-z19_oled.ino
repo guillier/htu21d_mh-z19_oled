@@ -1,23 +1,22 @@
 /*
-The MIT License (MIT)
-Copyright (c) 2015-2017 François GUILLIER <dev @ guillier . org>
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-*/
-
+ * The MIT License (MIT)
+ * Copyright (c) 2015-2017 François GUILLIER <dev @ guillier . org>
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #include <ESP8266WiFi.h>
@@ -35,8 +34,12 @@ THE SOFTWARE.
 #define WIFI_PASSWORD "DEMO_PASSPHRASE"
 #endif
 
-#ifndef MQTT_TOPIC_BASE
-#define MQTT_TOPIC_BASE "exp/sensor-esp8266-1/data/"
+#ifndef MQTT_TOPIC_BASE_TH
+#define MQTT_TOPIC_BASE_TH "exp/sensor-esp8266-1/data/"
+#endif
+
+#ifndef MQTT_TOPIC_BASE_CO2
+#define MQTT_TOPIC_BASE_CO2 "exp/sensor-esp8266-1/data/"
 #endif
 
 #ifndef MQTT_SERVER
@@ -49,7 +52,8 @@ THE SOFTWARE.
 
 const char *ssid = WIFI_SSID;
 const char *pass = WIFI_PASSWORD;
-String mqtt_topic_base = MQTT_TOPIC_BASE;
+String mqtt_topic_base_th = MQTT_TOPIC_BASE_TH;
+String mqtt_topic_base_co2 = MQTT_TOPIC_BASE_CO2;
 IPAddress MQTT_SERVER;
 
 Adafruit_SSD1306 display(8); // Reset PIN (not used)
@@ -183,7 +187,7 @@ void loop()
             Serial.print(co2);
             Serial.println(" ppm");
             #endif
-            publish(mqtt_topic_base + "co2", "{\"value\": " + String(co2) + "}");
+            publish(mqtt_topic_base_co2 + "co2", "{\"value\": " + String(co2) + "}");
             dsp_co2 = String(co2);
         }
 
@@ -202,12 +206,12 @@ void loop()
         if (temperature < 997)
         {
             dsp_temperature = String(temperature, 1);
-            publish(mqtt_topic_base + "temperature", "{\"value\": " + dsp_temperature + "}");
+            publish(mqtt_topic_base_th + "temperature", "{\"value\": " + dsp_temperature + "}");
         }
         if (humidity < 998)
         {
             dsp_humidity = String(humidity, 0);
-            publish(mqtt_topic_base + "humidity", "{\"value\": " + dsp_humidity + "}");
+            publish(mqtt_topic_base_th + "humidity", "{\"value\": " + dsp_humidity + "}");
         }
 
         WiFi.forceSleepBegin();
