@@ -13,4 +13,4 @@ Hardware used :
 ![Schematics](schematics.png)
 
 
-Corresponding blog entry: http://www.guillier.org/blog/XXXXXXXXXXXXXXXXXXX
+Corresponding blog entry: http://www.guillier.org/blog/2017/09/co2humiditytemperature-sensor/
